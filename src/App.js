@@ -5,12 +5,12 @@ import Countdown from "react-countdown-now";
 
 import "./App.css";
 
-const NODE_URL = "https://node01.lisk.io/api/loader/status/sync";
-const targetBlockheight = 6901027;
-const visualTargetBlockheight = "6,901,027";
-const estimatedDate = "Wed Aug 29 2018 11:13:44 GMT+0200 (Central European Summer Time)"; // showed while calculating
-const teasingMessage = "Lisk Core 1.0 is about to be launched on Mainnet!";
-const successMessage = "Oh Yeah! Core 1.0 is live on Mainnet!";
+const NODE_URL = "https://wallet.rise.vision/api/loader/status/sync";
+const targetBlockheight = 2108160;
+const visualTargetBlockheight = "2,108,160";
+const estimatedDate = "Sometime in the future"; // showed while calculating
+const teasingMessage = "RISE Rewards are dropping from 12 to 9 per block!";
+const successMessage = "Oh Yeah! First 9 RISE block has been forged!";
 
 class App extends Component {
   constructor() {
@@ -24,7 +24,7 @@ class App extends Component {
   }
 
   calculate = async () => {
-    this.getBlockHeight();
+    await this.getBlockHeight();
     const currentHeight = this.state.blockHeight;
     const finalHeight = this.state.targetBlockheight;
 
@@ -32,7 +32,7 @@ class App extends Component {
 
     const currentTime = moment.tz(moment.tz.guess());
     const blocksRemaining = finalHeight - currentHeight;
-    const secondsRemaining = blocksRemaining * 10;
+    const secondsRemaining = blocksRemaining * 30;
     const currentTimestamp = currentTime.unix();
     const resultTimestamp = currentTimestamp + secondsRemaining;
 
@@ -69,25 +69,27 @@ class App extends Component {
       } else {
         return (
           <h2>
-            {days
+            {days && !isNaN(days)
               ? <span>
                   <span id="countdown">{days}</span> Days
                 </span>
               : null}{" "}
-            {hours
+            {hours && !isNaN(hours)
               ? <span>
                   <span id="countdown">{hours}</span> Hours
                 </span>
               : null}{" "}
-            {minutes
+            {minutes && !isNaN(minutes)
               ? <span>
                   <span id="countdown">{minutes}</span> Minutes and
                 </span>
               : null}{" "}
             {" "}
-            <span>
-              <span id="countdown">{seconds}</span> Seconds!
-            </span>
+            {seconds && !isNaN(seconds)
+              ? <span>
+                  <span id="countdown">{minutes}</span> Seconds!
+                </span>
+              : null}{" "}
           </h2>
         );
       }
@@ -107,7 +109,7 @@ class App extends Component {
               <h1>We are almost there!</h1>
               <h2>{teasingMessage}</h2>
               <h3>
-                The fork will happen at block {visualTargetBlockheight}. Which means in more or
+                The new forging reward will become effective at block {visualTargetBlockheight}. Which means in more or
                 less:
               </h3>
 
@@ -130,10 +132,10 @@ class App extends Component {
             blocks
           </p>
           <p>
-            Made with {"<3"} by Carbonara
+            Made with {"<3"} by some coding monkey
           </p>
         </footer>
-        <footer className="credits">Vote for Carbonara!</footer>
+        {/*<footer className="credits">Vote for Carbonara!</footer>*/}
       </div>
     );
   }
